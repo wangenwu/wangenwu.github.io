@@ -7,11 +7,14 @@ category: linux
 ---
 
 在linux中，所有都是文件，也就是说一个连接也是一个文件。每打开一个文件，内核会分配一个文件描述符，因此一个进程可打开的最大文件描述符决定了可支持的最大连接数。这是一个重要的参数。
-	linux有两个限制：
+	
+linux有两个限制：
+
 	1、系统级限制。限制了整个系统可打开的最大文件描述符
+
 	2、每个进程的限制。一个应用可打开的最大文件描述符
 
-***对于系统限制，可以通过这个查看：
+对于系统限制，可以通过这个查看：
 {% highlight bash %}
 $ cat /proc/sys/fs/file-max
 131072
@@ -24,17 +27,22 @@ $ cat /proc/sys/fs/file-nr
 	0，已分配但是没有用的文件句柄
 	131072，系统支持最大的文件句柄数
 
-其中，系统支持的最大的文件句柄数还可以用cat /proc/sys/fs/file-max（或者sysctl fs.file-max）来查看。
+其中，系统支持的最大的文件句柄数还可以用
+{% highlight bash %}
+cat /proc/sys/fs/file-max（或者sysctl fs.file-max）
+{% endhighlight %}
+来查看。
 
 修改系统限制，可以这样修改：
 
 修改文件/etc/sysctl.conf 中的
-
+{% highlight bash %}
 fs.file-max = 100000
+{% endhighlight %}
 
 一行，保存后，让用户重新登录一下，即可永久生效；或者执行sysctl -p命令。
 
-***对于用户级限制，可以通过下面命令查看：
+对于用户级限制，可以通过下面命令查看：
 {% highlight bash %}
 $ ulimit -Hn
 65536
@@ -70,7 +78,9 @@ $ ulimit -Sn
 
 如果不想永久设置，还可以使用下面命令临时设置：
 
+{% highlight bash %}
 ulimit -n 65536
+{% endhighlight %}
 
 这样，只影响当前登录用户，下次重新登录后失效
 
